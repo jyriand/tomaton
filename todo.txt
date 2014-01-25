@@ -1,0 +1,4 @@
+best tool for ui testing?
+
+- http://www.uispec4j.org/
+- http://code.google.com/p/fest/

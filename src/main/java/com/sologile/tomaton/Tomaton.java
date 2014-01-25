@@ -2,25 +2,29 @@ package com.sologile.tomaton;
 
 
 import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
 
 public class Tomaton {
 
     public static final String APP_NAME = "Tomaton";
 
-    public static void main(String[] args) throws InvocationTargetException, InterruptedException {
+    private TomatonWindow tomatonWindow;
+
+    public Tomaton() throws Exception {
+        startUserInterface();
+    }
+
+    public void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable(){
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                JLabel label = new JLabel();
-                label.setText(APP_NAME);
-                label.setName(APP_NAME);
-                frame.setName(APP_NAME);
-                frame.getContentPane().add(label);
-                frame.setVisible(true);
+                tomatonWindow = new TomatonWindow();
             }
         });
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        Tomaton tomaton = new Tomaton();
     }
 
 }

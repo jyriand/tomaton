@@ -17,4 +17,8 @@ public class TomatonDriver extends JFrameDriver {
     public void mainWindowIsOpened(String windowTitle) {
             new JLabelDriver(this, named(windowTitle)).hasText(equalTo(windowTitle));
     }
+
+    public void clickClose() {
+
+    }
 }

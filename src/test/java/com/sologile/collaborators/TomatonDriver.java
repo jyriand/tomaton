@@ -1,9 +1,7 @@
 package com.sologile.collaborators;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
-import com.objogate.wl.swing.driver.JButtonDriver;
-import com.objogate.wl.swing.driver.JFrameDriver;
-import com.objogate.wl.swing.driver.JLabelDriver;
+import com.objogate.wl.swing.driver.*;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 
 import javax.swing.*;
@@ -41,5 +39,31 @@ public class TomatonDriver extends JFrameDriver {
     private JLabelDriver label(String name) {
         return new JLabelDriver(this, named(name));
     }
+
+    public void writeToTextField(String name, String content) {
+        new JTextFieldDriver(this, JTextField.class, named(name)).replaceAllText(content);
+    }
+
+    public void showsActivityList() {
+        table("activityList").cellRenderedWithText(0, 0, equalTo("activity"));
+    }
+
+    public void createsNewRowInActivityTable(String cellName) {
+        nap(100);
+        table("activityList").cellRenderedWithText(1, 0, equalTo(cellName));
+    }
+
+    private void nap(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JTableDriver table(String name) {
+        return new JTableDriver(this, JTable.class, named(name));
+    }
+
 
 }

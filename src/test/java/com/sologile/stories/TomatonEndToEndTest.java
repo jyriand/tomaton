@@ -47,6 +47,18 @@ public class TomatonEndToEndTest {
 
     }
 
+    @Test
+    public void canCreateNewActivity() throws Exception {
+        given(user).startsTheApplication();
+        given(application).showsFieldForAddingNewActivities();
+
+        when(user).insertsNewActivity("Activity text");
+        when(user).clicksAddActivity();
+
+        then(application).showsActivityInActivityList();
+
+    }
+
     private class UserActor implements Arranger, Actor {
         public void startsTheApplication() {
             try {
@@ -58,6 +70,14 @@ public class TomatonEndToEndTest {
 
         public void clicksStartPomodoroButton() {
             driver.clickButton("startPomodoro");
+        }
+
+        public void insertsNewActivity(String activityDescription) {
+            driver.writeToTextField("newActivity", activityDescription);
+        }
+
+        public void clicksAddActivity() {
+            driver.clickButton("addActivity");
         }
     }
 
@@ -86,6 +106,15 @@ public class TomatonEndToEndTest {
             driver.hasTimerWithTime("24:59");
             Thread.sleep(1000);
             driver.hasTimerWithTime("24:58");
+        }
+
+        public void showsFieldForAddingNewActivities() {
+            driver.showsActivityList();
+
+        }
+
+        public void showsActivityInActivityList() {
+            driver.createsNewRowInActivityTable("Activity text");
         }
     }
 

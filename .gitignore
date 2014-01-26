@@ -1,4 +1,12 @@
 .idea
 .gradle
+.metadata
+build
+cache
+*.iml
 out
 target
+*.class
+*.jar
+*.war
+*.ear

@@ -1,6 +1,7 @@
 package com.sologile.stories;
 
 
+import com.shazam.gwen.collaborators.Actor;
 import com.shazam.gwen.collaborators.Arranger;
 import com.shazam.gwen.collaborators.Asserter;
 import com.sologile.collaborators.TomatonDriver;
@@ -10,8 +11,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static com.shazam.gwen.Gwen.given;
-import static com.shazam.gwen.Gwen.then;
+import static com.shazam.gwen.Gwen.*;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -32,14 +32,22 @@ public class TomatonEndToEndTest {
         given(user).startsTheApplication();
 
         then(application).shouldHaveOpenedAWindow(Tomaton.APP_NAME);
-
         then(application).showsAWindowWithSize(800, 600);
+        then(application).showsAPomodoroTimerAndAButton();
+    }
 
-        then(application).showsAPomodoroTimer();
+    @Test
+    public void canStartTheTimer() throws Exception {
+        given(user).startsTheApplication();
+        given(application).showsAPomodoroTimerAndAButton();
+
+        when(user).clicksStartPomodoroButton();
+
+        then(application).willStartCountingDownTheTimer();
 
     }
 
-    private class UserActor implements Arranger {
+    private class UserActor implements Arranger, Actor {
         public void startsTheApplication() {
             try {
                 Tomaton.main(new String[]{});
@@ -48,19 +56,16 @@ public class TomatonEndToEndTest {
             }
         }
 
-        public void closesTheApplication() {
-            driver.clickClose();
+        public void clicksStartPomodoroButton() {
+            driver.clickButton("startPomodoro");
         }
     }
 
-    private class ApplicatonActor implements Asserter {
+    private class ApplicatonActor implements Asserter, Actor, Arranger {
         public void shouldHaveOpenedAWindow(String windowTitle) {
             driver.mainWindowIsOpened(windowTitle);
         }
 
-        public void closesWindow(String windowName) {
-
-        }
 
         public void showsAWindowWithSize(int width, int height) {
             Dimension size = driver.component().component().getSize();
@@ -68,9 +73,19 @@ public class TomatonEndToEndTest {
             assertThat(size.getWidth(), is((double) width));
         }
 
-        public void showsAPomodoroTimer() {
+        public void showsAPomodoroTimerAndAButton() {
+            driver.hasTimerWithTime("25:00");
+            driver.hasStartPomodoroButton("startPomodoro");
+        }
 
-
+        public void willStartCountingDownTheTimer() throws InterruptedException {
+            driver.hasTimerWithTime("25:00");
+            Thread.sleep(500);
+            driver.hasTimerWithTime("25:00");
+            Thread.sleep(1000);
+            driver.hasTimerWithTime("24:59");
+            Thread.sleep(1000);
+            driver.hasTimerWithTime("24:58");
         }
     }
 

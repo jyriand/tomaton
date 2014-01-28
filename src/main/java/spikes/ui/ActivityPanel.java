@@ -1,4 +1,4 @@
-package com.sologile.tomaton;
+package spikes.ui;
 
 import javax.swing.*;
 import java.awt.*;

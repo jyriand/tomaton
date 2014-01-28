@@ -1,16 +1,16 @@
-package com.sologile.tomaton;
+package spikes.ui;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class EggTimerBoard extends JPanel {
+public class SpikeEggTimerBoard extends JPanel {
 
     private JLabel timer;
     private Button start;
     private Button stop;
     private Font timerFont;
 
-    EggTimerBoard() {
+    SpikeEggTimerBoard() {
         this.timer = new JLabel();
         this.start = new Button("Start");
         this.stop = new Button("Stop");

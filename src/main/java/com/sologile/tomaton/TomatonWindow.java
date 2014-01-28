@@ -1,40 +1,62 @@
 package com.sologile.tomaton;
 
+import com.sologile.tomaton.models.ActivityTableModel;
+import com.sologile.tomaton.view.ActivityBox;
+import com.sologile.tomaton.view.ActivitySheet;
+import com.sologile.tomaton.view.EggTimerBoard;
+import spikes.ui.SpikeActivityTableModel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static com.sologile.tomaton.Tomaton.APP_NAME;
 
 public class TomatonWindow extends JFrame {
 
-    private JLabel timer;
-    private ActivityTableModel model;
-    private final JTextField newActivityField;
+    private ActivityTableModel activityModel;
+    private SpikeActivityTableModel model;
+
+    private EggTimerBoard timerBoard;
+    private ActivitySheet activitySheet;
+    private ActivityBox activityBox;
+
 
     public TomatonWindow(){
+        activityModel = new ActivityTableModel();
         setSize(new Dimension(800, 600));
         setName(APP_NAME);
-
-        timer = label("timer", "25:00");
-        newActivityField = newActivity();
-
-        addToContent(label(APP_NAME, APP_NAME), BorderLayout.PAGE_START);
-        addToContent(button(), BorderLayout.PAGE_START);
-        addToContent(timer, BorderLayout.LINE_START);
-        addToContent(newActivityField, BorderLayout.CENTER);
-        addToContent(addActivityButton(), BorderLayout.LINE_END);
-        addToContent(activityTable(), BorderLayout.PAGE_END);
-
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        timerBoard = new EggTimerBoard();
+        activitySheet = new ActivitySheet(activityModel);
+        activityBox = new ActivityBox(activityModel);
+
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 0;
+
+        addToContent(timerBoard, c);
+        c.gridy = 1;
+        addToContent(activityBox, c);
+
+        c.gridy = 2;
+        addToContent(activitySheet, c);
+
+
+    }
+
+    private void addToContent(JPanel panel, GridBagConstraints c) {
+        getContentPane().add(panel, c);
     }
 
     private JTable activityTable() {
         JTable table = new JTable();
         table.setName("activityList");
-        model = new ActivityTableModel();
+        model = new SpikeActivityTableModel();
         model.addColumn("Col1");
         model.addRow(new Object[]{"activity"});
 
@@ -48,12 +70,12 @@ public class TomatonWindow extends JFrame {
         btn.setName("addActivity");
         btn.setSize(50,50);
 
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.addRow(new Object[]{newActivityField.getText()});
-            }
-        });
+//        btn.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                model.addRow(new Object[]{newActivityField.getText()});
+//            }
+//        });
 
         btn.setAlignmentX(100);
         return btn;
@@ -72,14 +94,14 @@ public class TomatonWindow extends JFrame {
         btn.setSize(50,50);
 
 
-        final Timer tmr = new Timer(1000, new TimerActionListener(timer));
+//        final Timer tmr = new Timer(1000, new TimerActionListener(timer));
 
-        btn.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tmr.start();
-            }
-        });
+//        btn.addActionListener(new ActionListener(){
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                tmr.start();
+//            }
+//        });
 
         return btn;
     }
@@ -94,5 +116,6 @@ public class TomatonWindow extends JFrame {
     private void addToContent(Component component, String layout) {
         getContentPane().add(component, layout);
     }
+
 
 }

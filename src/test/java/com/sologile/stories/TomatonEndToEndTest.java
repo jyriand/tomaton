@@ -9,12 +9,9 @@ import com.sologile.tomaton.Tomaton;
 import org.junit.After;
 import org.junit.Test;
 
-import java.awt.*;
-
 import static com.shazam.gwen.Gwen.*;
+import static com.sologile.tomaton.constants.FieldNames.*;
 import static junit.framework.TestCase.fail;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class TomatonEndToEndTest {
 
@@ -32,7 +29,6 @@ public class TomatonEndToEndTest {
         given(user).startsTheApplication();
 
         then(application).shouldHaveOpenedAWindow(Tomaton.APP_NAME);
-        then(application).showsAWindowWithSize(800, 600);
         then(application).showsAPomodoroTimerAndAButton();
     }
 
@@ -69,15 +65,15 @@ public class TomatonEndToEndTest {
         }
 
         public void clicksStartPomodoroButton() {
-            driver.clickButton("startPomodoro");
+            driver.clickButton(START_POMODORO_BTN);
         }
 
         public void insertsNewActivity(String activityDescription) {
-            driver.writeToTextField("newActivity", activityDescription);
+            driver.writeToTextField(NEW_ACTIVITY_FLD, activityDescription);
         }
 
         public void clicksAddActivity() {
-            driver.clickButton("addActivity");
+            driver.clickButton(ADD_ACTIVITY_BTN);
         }
     }
 
@@ -86,16 +82,9 @@ public class TomatonEndToEndTest {
             driver.mainWindowIsOpened(windowTitle);
         }
 
-
-        public void showsAWindowWithSize(int width, int height) {
-            Dimension size = driver.component().component().getSize();
-            assertThat(size.getHeight(), is((double)height));
-            assertThat(size.getWidth(), is((double) width));
-        }
-
         public void showsAPomodoroTimerAndAButton() {
             driver.hasTimerWithTime("25:00");
-            driver.hasStartPomodoroButton("startPomodoro");
+            driver.hasStartPomodoroButton(START_POMODORO_BTN);
         }
 
         public void willStartCountingDownTheTimer() throws InterruptedException {
